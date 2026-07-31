@@ -1,5 +1,6 @@
 .agents/
 .playwright-mcp/
+node_modules/
 *.log
 *.err
 skills-lock.json
