@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: Deploy backend and frontend
     runs-on: ubuntu-latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -16,21 +18,21 @@ jobs:
         run: npm i -g @railway/cli
 
       - name: Deploy backend
-        if: ${{ secrets.RAILWAY_TOKEN != '' }}
+        if: ${{ env.RAILWAY_TOKEN != '' }}
         working-directory: backend
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
         run: railway up --detach --service backend --ci
 
       - name: Deploy frontend
-        if: ${{ secrets.RAILWAY_TOKEN != '' }}
+        if: ${{ env.RAILWAY_TOKEN != '' }}
         working-directory: frontend
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
         run: railway up --detach --service frontend --ci
 
       - name: Skipped (no RAILWAY_TOKEN)
-        if: ${{ secrets.RAILWAY_TOKEN == '' }}
+        if: ${{ env.RAILWAY_TOKEN == '' }}
         run: |
           echo "RAILWAY_TOKEN secret not set — deploy skipped."
           echo "Create a project token in Railway (Settings -> Tokens) and add it as the RAILWAY_TOKEN repo secret."
