@@ -4,8 +4,9 @@ A full-stack multi-tenant Hospital Management SaaS built with **Spring Boot 3.4 
 
 ## Live Demo
 
-- **Frontend:** https://hrm-k.up.railway.app
-- **Backend API:** https://backend-production-0cff.up.railway.app
+- **Frontend (Vercel):** https://hospital-management-system-eta-beige.vercel.app
+- **Frontend (Railway):** https://hrm-k.up.railway.app
+- **Backend API (Railway):** https://backend-production-88e3a.up.railway.app
 - Demo login: `admin@hospital.com` / `admin123`
 
 ## Features (12 Modules)
@@ -27,34 +28,32 @@ A full-stack multi-tenant Hospital Management SaaS built with **Spring Boot 3.4 
 
 ## Tech Stack
 
-**Backend:** Java 17+, Spring Boot 3.4.5, Spring Data JDBC, MySQL 8.0, Maven
+**Backend:** Java 21, Spring Boot 3.4.5, Spring Data JDBC, MySQL 8.0, Maven
 **Frontend:** React 19, Vite, Tailwind CSS v4, shadcn/ui, Recharts, Lucide React
 **Auth:** JWT (HttpOnly cookies + Bearer header), BCrypt, rate limiting
+**Deploy:** Railway (backend + MySQL + frontend mirror), Vercel (frontend)
 
 ## Quick Start
 
 ### Prerequisites
-- JDK 17+, Maven, Node.js 18+, MySQL 8.0
+- JDK 21+, Maven, Node.js 20+, MySQL 8.0
 
-### 1. Database
-```sql
-CREATE DATABASE Hospital;
-```
-
-### 2. Backend
+### 1. Backend
 ```bash
 cd backend
+cp .env.example .env
 mvn spring-boot:run
 ```
-Starts on `http://localhost:8080`. Uses `DB_PASSWORD` env var (default: `Krushna@2155`).
+Starts on `http://localhost:8080`. Copy the env vars from `backend/.env.example` into your environment or `.env` file.
 
-### 3. Frontend
+### 2. Frontend
 ```bash
 cd frontend
+cp .env.example .env
 npm install
 npm run dev
 ```
-Starts on `http://localhost:5173`.
+Starts on `http://localhost:5173`. Set `VITE_API_URL` in `frontend/.env` to point at the backend (`http://localhost:8080/api` by default).
 
 ## Demo Data
 
@@ -93,10 +92,46 @@ Rate limit: 20 req/min on `/api/auth/` and `/api/admin/`.
 
 ## Environment Variables
 
+### Backend (`backend/.env.example`)
+
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `DB_PASSWORD` | `Krushna@2155` | MySQL password |
-| `JWT_SECRET` | (hardcoded fallback) | JWT signing secret |
+| `MYSQLHOST` | `localhost` | MySQL host |
+| `MYSQLPORT` | `3306` | MySQL port |
+| `MYSQLDATABASE` | `Hospital` | MySQL database name |
+| `MYSQLUSER` | `root` | MySQL username |
+| `MYSQLPASSWORD` | `Krushna@2155` (via `DB_PASSWORD`) | MySQL password |
+| `DB_PASSWORD` | — | Fallback password if `MYSQLPASSWORD` is unset |
+| `PORT` | `8080` | HTTP port (Railway injects `PORT`) |
+| `JWT_SECRET` | (hardcoded fallback) | JWT signing secret — set a long random value in production |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Comma-separated list of allowed frontend origins |
+
+### Frontend (`frontend/.env.example`)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_API_URL` | `http://localhost:8080/api` | Base URL of the backend API (no trailing slash) |
+
+## Deployment
+
+### Railway (backend + MySQL)
+
+1. Create a **MySQL** service and a **backend** service (root directory: `backend`).
+2. On the backend service, set the `MYSQL*` variables to point at the MySQL service reference, plus `JWT_SECRET` and `CORS_ALLOWED_ORIGINS`.
+3. Deploy: `railway up --detach --service backend`.
+4. Generate a domain: `railway domain`.
+
+> Note: after creating/changing the backend domain, run `railway redeploy --service backend --yes` so the edge registers the new route — otherwise requests return `404 Application not found` (`x-railway-fallback: true`).
+
+### Vercel (frontend)
+
+1. Import the repo with **Root Directory** set to `frontend`.
+2. Set the env var `VITE_API_URL=https://<your-backend>.up.railway.app/api`.
+3. Deploy. The build command is `npm run build` and the output directory is `dist` (set if not auto-detected).
+
+### Railway (frontend mirror, optional)
+
+Set `VITE_API_URL` on the frontend service the same way, then `railway up --detach --service frontend`.
 
 ## Project Structure
 

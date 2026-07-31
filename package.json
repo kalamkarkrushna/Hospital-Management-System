@@ -1,0 +1,24 @@
+{
+  "name": "hospital-management-system",
+  "version": "1.0.0",
+  "description": "A full-stack multi-tenant Hospital Management SaaS built with **Spring Boot 3.4 + React + MySQL**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalamkarkrushna/Hospital-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kalamkarkrushna/Hospital-Management-System/issues"
+  },
+  "homepage": "https://github.com/kalamkarkrushna/Hospital-Management-System#readme",
+  "dependencies": {
+    "railway": "^3.7.0"
+  }
+}

@@ -5,11 +5,20 @@ React SPA for the Hospital Management System, built with Vite + Tailwind CSS v4 
 ## Setup
 
 ```bash
+cp .env.example .env   # optional — VITE_API_URL defaults to http://localhost:8080/api
 npm install
 npm run dev
 ```
 
-Opens on `http://localhost:5173` (proxies API calls to `http://localhost:8080`).
+Opens on `http://localhost:5173` and calls the backend at `http://localhost:8080/api` by default.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_API_URL` | `http://localhost:8080/api` | Base URL of the backend API (no trailing slash). E.g. `https://backend-production-88e3a.up.railway.app/api` |
+
+`VITE_*` vars are baked in at build time — redeploy after changing them.
 
 ## Pages
 
