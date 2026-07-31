@@ -64,14 +64,14 @@ export default function DoctorList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search doctors..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search doctors" placeholder="Search doctors..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Add</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border border-border">
             <Input placeholder="Doctor name" value={addForm.name} onChange={(e) => setAddForm({ ...addForm, name: e.target.value })} required />
@@ -107,10 +107,10 @@ export default function DoctorList() {
                     <TableCell className="font-medium">{d.name}</TableCell>
                     <TableCell><Badge variant="secondary">{d.specialization}</Badge></TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      <Button size="icon-xs" variant="ghost" onClick={() => startEdit(d)}><Pencil className="w-3 h-3" /></Button>
+                      <Button size="icon-xs" variant="ghost" aria-label={`Edit doctor ${d.name}`} onClick={() => startEdit(d)}><Pencil className="w-3 h-3" /></Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(d.id)}><Trash2 className="w-3 h-3" /></Button>
+                            <Button size="icon-xs" variant="ghost" aria-label={`Delete doctor ${d.name}`} onClick={() => setDeleteId(d.id)}><Trash2 className="w-3 h-3" /></Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>

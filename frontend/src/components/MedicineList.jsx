@@ -62,14 +62,14 @@ export default function MedicineList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search medicines..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search medicines" placeholder="Search medicines..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Add</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border flex-wrap">
             <Input placeholder="Medicine name" value={addForm.name} onChange={(e) => setAddForm({ ...addForm, name: e.target.value })} required />
@@ -101,10 +101,10 @@ export default function MedicineList() {
                     <TableCell className="font-medium">{m.name}</TableCell>
                     <TableCell><span className={m.stock <= 10 ? "text-destructive font-medium" : ""}>{m.stock}</span></TableCell>
                     <TableCell className="font-mono">${Number(m.price).toFixed(2)}</TableCell>
-                    <TableCell className="text-sm">{m.expiryDate || "—"}</TableCell>
+                    <TableCell className="text-sm">{m.expiryDate || "â€”"}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      <Button size="icon-xs" variant="ghost" onClick={() => startEdit(m)}><Pencil className="w-3 h-3" /></Button>
-                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(m.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
+                      <Button size="icon-xs" variant="ghost" aria-label={`Edit medicine ${m.id}`} onClick={() => startEdit(m)}><Pencil className="w-3 h-3" /></Button>
+                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" aria-label={`Delete medicine ${m.id}`} onClick={() => setDeleteId(m.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
                         <DialogContent><DialogHeader><DialogTitle>Delete Medicine</DialogTitle><DialogDescription>Are you sure?</DialogDescription></DialogHeader>
                           <DialogFooter><DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose><Button variant="destructive" onClick={handleDelete}>Delete</Button></DialogFooter>
                         </DialogContent>

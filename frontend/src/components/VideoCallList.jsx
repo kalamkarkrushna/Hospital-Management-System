@@ -64,14 +64,14 @@ export default function VideoCallList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search video calls" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Schedule</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border flex-wrap">
             <select value={addForm.patientId} onChange={(e) => setAddForm({ ...addForm, patientId: e.target.value })} required className="h-9 rounded-md border px-3 text-sm bg-background">
@@ -111,9 +111,9 @@ export default function VideoCallList() {
                     <TableCell className="text-sm">{v.scheduledDate?.replace("T", " ")}</TableCell>
                     <TableCell><Badge variant={v.status === "COMPLETED" ? "default" : v.status === "CANCELLED" ? "destructive" : "secondary"}>{v.status}</Badge></TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      {v.meetingLink && <a href={v.meetingLink} target="_blank" rel="noopener noreferrer"><Button size="icon-xs" variant="outline"><Video className="w-3 h-3" /></Button></a>}
-                      <Button size="icon-xs" variant="ghost" onClick={() => startEdit(v)}><Pencil className="w-3 h-3" /></Button>
-                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(v.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
+                      {v.meetingLink && <a href={v.meetingLink} target="_blank" rel="noopener noreferrer" aria-label={`Join video call ${v.id}`}><Button size="icon-xs" variant="outline"><Video className="w-3 h-3" /></Button></a>}
+                      <Button size="icon-xs" variant="ghost" aria-label={`Edit video call ${v.id}`} onClick={() => startEdit(v)}><Pencil className="w-3 h-3" /></Button>
+                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" aria-label={`Delete video call ${v.id}`} onClick={() => setDeleteId(v.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
                         <DialogContent><DialogHeader><DialogTitle>Delete Video Call</DialogTitle><DialogDescription>Are you sure?</DialogDescription></DialogHeader>
                           <DialogFooter><DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose><Button variant="destructive" onClick={handleDelete}>Delete</Button></DialogFooter>
                         </DialogContent>

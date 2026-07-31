@@ -27,6 +27,7 @@ import {
   Package,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import usePageMeta from "../hooks/usePageMeta";
 
 const features = [
   { icon: Users, title: "Patient Management", desc: "Register and manage patient records with demographics, medical history, and contact information." },
@@ -91,6 +92,11 @@ export default function Landing() {
   const [showNav, setShowNav] = useState(true);
   const lastScrollY = useRef(0);
 
+  usePageMeta({
+    title: "HMS — Hospital Management System",
+    description: "A lightweight, multi-tenant hospital management SaaS for clinics and small hospitals. Manage patients, doctors, appointments, billing, pharmacy, and lab reports effortlessly.",
+  });
+
   useEffect(() => {
     const handleScroll = () => {
       const current = window.scrollY;
@@ -102,7 +108,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background relative">
+    <main id="main-content" className="flex flex-col min-h-screen bg-background relative">
       <div className="fixed inset-0 z-0">
         <LiquidEther
           mouseForce={20}
@@ -122,7 +128,7 @@ export default function Landing() {
           <Link to="/" className="text-xl font-heading font-bold tracking-tight text-foreground">
             HMS
           </Link>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
             <a href="#testimonials" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
@@ -133,7 +139,12 @@ export default function Landing() {
               <Link to="/login"><Button variant="ghost" size="sm">Sign In</Button></Link>
               <Link to="/register"><Button size="sm">Get Started</Button></Link>
             </div>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-foreground cursor-pointer">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 text-foreground cursor-pointer"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+            >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
@@ -199,7 +210,7 @@ export default function Landing() {
             <FadeContent threshold={0.1} duration={800}>
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Trusted by healthcare professionals worldwide</p>
             </FadeContent>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-4 text-muted-foreground/40">
+            <div aria-hidden="true" className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-4 text-muted-foreground/40">
               <span className="text-base sm:text-lg font-heading font-bold text-muted-foreground/20">HOSPITAL</span>
               <span className="text-base sm:text-lg font-heading font-bold text-muted-foreground/20">CLINIC</span>
               <span className="text-base sm:text-lg font-heading font-bold text-muted-foreground/20">MEDICAL</span>
@@ -409,6 +420,6 @@ export default function Landing() {
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

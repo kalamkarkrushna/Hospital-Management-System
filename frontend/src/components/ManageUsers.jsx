@@ -101,10 +101,10 @@ export default function ManageUsers() {
                       <Badge variant={u.role === "ADMIN" ? "default" : "secondary"}>{u.role}</Badge>
                     </TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      <Button size="icon-xs" variant="ghost" onClick={() => startEdit(u)}><Pencil className="w-3 h-3" /></Button>
+                      <Button size="icon-xs" variant="ghost" aria-label={`Edit user ${u.name}`} onClick={() => startEdit(u)}><Pencil className="w-3 h-3" /></Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(u.id)}><Trash2 className="w-3 h-3" /></Button>
+                            <Button size="icon-xs" variant="ghost" aria-label={`Delete user ${u.name}`} onClick={() => setDeleteId(u.id)}><Trash2 className="w-3 h-3" /></Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>

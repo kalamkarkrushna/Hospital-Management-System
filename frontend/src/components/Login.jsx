@@ -7,6 +7,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 import LiquidEther from "./LiquidEther";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,6 +15,11 @@ export default function Login() {
   const [error, setError] = useState("");
   const { loginUser } = useAuth();
   const navigate = useNavigate();
+
+  usePageMeta({
+    title: "Sign In | HMS",
+    description: "Sign in to your HMS hospital management dashboard.",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +37,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 relative">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-background px-4 relative">
       <div className="fixed inset-0 z-0">
         <LiquidEther
           mouseForce={20}
@@ -54,13 +60,13 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="admin@hospital.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Input id="email" type="email" autoComplete="email" placeholder="admin@hospital.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <Input id="password" type="password" autoComplete="current-password" placeholder="••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full">Sign In</Button>
           </form>
         </CardContent>
@@ -70,6 +76,6 @@ export default function Login() {
           </p>
         </CardFooter>
       </Card>
-    </div>
+    </main>
   );
 }

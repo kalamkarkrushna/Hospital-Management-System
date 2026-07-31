@@ -59,7 +59,7 @@ export default function Navbar() {
           </Button>
           <Sheet>
             <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon-sm" className="text-primary-foreground/70 hover:text-primary-foreground">
+              <Button variant="ghost" size="icon-sm" aria-label="Open navigation menu" className="text-primary-foreground/70 hover:text-primary-foreground">
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>

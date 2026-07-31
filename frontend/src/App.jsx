@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./components/theme-provider";
+import usePageMeta from "./hooks/usePageMeta";
 import Navbar from "./components/Navbar";
 import Landing from "./components/Landing";
 import Dashboard from "./components/Dashboard";
@@ -18,13 +19,31 @@ import Insights from "./components/Insights";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
+const PAGE_META = {
+  "/dashboard": { title: "Dashboard | HMS", description: "Your hospital management dashboard." },
+  "/patients": { title: "Patients | HMS", description: "Manage your patients." },
+  "/doctors": { title: "Doctors | HMS", description: "Manage your doctors." },
+  "/appointments": { title: "Appointments | HMS", description: "Manage appointments and scheduling." },
+  "/admin": { title: "Admin | HMS", description: "Manage hospital users and roles." },
+  "/invoices": { title: "Billing | HMS", description: "Manage invoices and billing." },
+  "/pharmacy": { title: "Pharmacy | HMS", description: "Manage medicines and the pharmacy." },
+  "/lab-reports": { title: "Lab Reports | HMS", description: "Manage lab reports." },
+  "/shifts": { title: "Scheduling | HMS", description: "Manage staff shifts." },
+  "/inventory": { title: "Inventory | HMS", description: "Manage hospital inventory." },
+  "/telemedicine": { title: "Telemedicine | HMS", description: "Manage video consultations." },
+  "/insights": { title: "Insights | HMS", description: "Analytics and insights for your hospital." },
+};
+
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
+  const { pathname } = useLocation();
+  const meta = PAGE_META[pathname] || { title: "HMS", description: "Hospital management." };
+  usePageMeta(meta);
   if (!user) return <Navigate to="/login" />;
   return (
     <>
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">{children}</div>
+      <main id="main-content" className="max-w-5xl mx-auto px-4 py-8">{children}</main>
     </>
   );
 }
@@ -68,6 +87,12 @@ export default function App() {
     <BrowserRouter>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <AuthProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-primary focus:text-primary-foreground focus:text-sm focus:font-medium"
+          >
+            Skip to main content
+          </a>
           <div className="min-h-screen bg-background">
             <AppRoutes />
           </div>

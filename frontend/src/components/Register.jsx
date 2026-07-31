@@ -7,12 +7,18 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 import LiquidEther from "./LiquidEther";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function Register() {
   const [form, setForm] = useState({ hospitalName: "", name: "", email: "", password: "", phone: "" });
   const [error, setError] = useState("");
   const { loginUser } = useAuth();
   const navigate = useNavigate();
+
+  usePageMeta({
+    title: "Create Account | HMS",
+    description: "Create a free HMS account for your clinic or small hospital.",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +36,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8 relative">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-background px-4 py-8 relative">
       <div className="fixed inset-0 z-0">
         <LiquidEther
           mouseForce={20}
@@ -53,25 +59,25 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid gap-1.5">
               <Label htmlFor="hospitalName">Hospital Name</Label>
-              <Input id="hospitalName" placeholder="My Hospital" value={form.hospitalName} onChange={(e) => setForm({ ...form, hospitalName: e.target.value })} required />
+              <Input id="hospitalName" autoComplete="organization" placeholder="My Hospital" value={form.hospitalName} onChange={(e) => setForm({ ...form, hospitalName: e.target.value })} required />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="name">Your Name</Label>
-              <Input id="name" placeholder="John Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+              <Input id="name" autoComplete="name" placeholder="John Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@hospital.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+              <Input id="email" type="email" autoComplete="email" placeholder="you@hospital.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+              <Input id="password" type="password" autoComplete="new-password" placeholder="••••••" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" type="tel" placeholder="+1 234 567 8900" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
+              <Input id="phone" type="tel" autoComplete="tel" placeholder="+1 234 567 8900" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full">Create Account</Button>
           </form>
         </CardContent>
@@ -81,6 +87,6 @@ export default function Register() {
           </p>
         </CardFooter>
       </Card>
-    </div>
+    </main>
   );
 }

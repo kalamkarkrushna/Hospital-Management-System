@@ -66,14 +66,14 @@ export default function InvoiceList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search invoices..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search invoices" placeholder="Search invoices..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Add</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border flex-wrap">
             <select value={addForm.patientId} onChange={(e) => setAddForm({ ...addForm, patientId: e.target.value })} required className="h-9 rounded-md border px-3 text-sm bg-background">
@@ -112,8 +112,8 @@ export default function InvoiceList() {
                     <TableCell><Badge variant={i.status === "PAID" ? "default" : i.status === "CANCELLED" ? "destructive" : "secondary"}>{i.status}</Badge></TableCell>
                     <TableCell className="text-sm">{i.date}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
-                      <Button size="icon-xs" variant="ghost" onClick={() => startEdit(i)}><Pencil className="w-3 h-3" /></Button>
-                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(i.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
+                      <Button size="icon-xs" variant="ghost" aria-label={`Edit invoice ${i.id}`} onClick={() => startEdit(i)}><Pencil className="w-3 h-3" /></Button>
+                      <Dialog><DialogTrigger asChild><Button size="icon-xs" variant="ghost" aria-label={`Delete invoice ${i.id}`} onClick={() => setDeleteId(i.id)}><Trash2 className="w-3 h-3" /></Button></DialogTrigger>
                         <DialogContent><DialogHeader><DialogTitle>Delete Invoice</DialogTitle><DialogDescription>Are you sure? This cannot be undone.</DialogDescription></DialogHeader>
                           <DialogFooter><DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose><Button variant="destructive" onClick={handleDelete}>Delete</Button></DialogFooter>
                         </DialogContent>

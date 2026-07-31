@@ -69,27 +69,27 @@ export default function PatientList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search patients..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search patients" placeholder="Search patients..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Add</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border flex-wrap items-end">
             <div className="grid gap-1 flex-1 min-w-[140px]">
-              <label className="text-xs text-muted-foreground">Name</label>
-              <Input placeholder="Full name" value={addForm.name} onChange={(e) => setAddForm({ ...addForm, name: e.target.value })} required />
+              <label htmlFor="addPatientName" className="text-xs text-muted-foreground">Name</label>
+              <Input id="addPatientName" placeholder="Full name" value={addForm.name} onChange={(e) => setAddForm({ ...addForm, name: e.target.value })} required />
             </div>
             <div className="grid gap-1 w-20">
-              <label className="text-xs text-muted-foreground">Age</label>
-              <Input placeholder="Age" type="number" value={addForm.age} onChange={(e) => setAddForm({ ...addForm, age: e.target.value })} required />
+              <label htmlFor="addPatientAge" className="text-xs text-muted-foreground">Age</label>
+              <Input id="addPatientAge" placeholder="Age" type="number" value={addForm.age} onChange={(e) => setAddForm({ ...addForm, age: e.target.value })} required />
             </div>
             <div className="grid gap-1 w-28">
-              <label className="text-xs text-muted-foreground">Gender</label>
-              <select value={addForm.gender} onChange={(e) => setAddForm({ ...addForm, gender: e.target.value })} required
+              <label htmlFor="addPatientGender" className="text-xs text-muted-foreground">Gender</label>
+              <select id="addPatientGender" value={addForm.gender} onChange={(e) => setAddForm({ ...addForm, gender: e.target.value })} required
                 className="h-7 rounded-md border border-input bg-background px-2 text-sm">
                 <option value="">Select</option>
                 <option value="Male">Male</option>
@@ -141,10 +141,10 @@ export default function PatientList() {
                       <TableCell className="text-muted-foreground">{p.age}</TableCell>
                       <TableCell><Badge variant="secondary">{p.gender}</Badge></TableCell>
                       <TableCell className="text-right whitespace-nowrap">
-                        <Button size="icon-xs" variant="ghost" onClick={() => startEdit(p)}><Pencil className="w-3.5 h-3.5" /></Button>
+                        <Button size="icon-xs" variant="ghost" aria-label={`Edit patient ${p.name}`} onClick={() => startEdit(p)}><Pencil className="w-3.5 h-3.5" /></Button>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button size="icon-xs" variant="ghost" onClick={() => setDeleteId(p.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                            <Button size="icon-xs" variant="ghost" aria-label={`Delete patient ${p.name}`} onClick={() => setDeleteId(p.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>

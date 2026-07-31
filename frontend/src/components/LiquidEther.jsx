@@ -32,6 +32,9 @@ export default function LiquidEther({
 
   useEffect(() => {
     if (!mountRef.current) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
     function makePaletteTexture(stops) {
       let arr;

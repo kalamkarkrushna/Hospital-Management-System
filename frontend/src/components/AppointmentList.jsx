@@ -76,35 +76,35 @@ export default function AppointmentList() {
           <div className="flex gap-2 sm:ml-auto">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search appointments..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
+              <Input aria-label="Search appointments" placeholder="Search appointments..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 w-full sm:w-56" />
             </div>
             <Button size="sm" onClick={() => setShowAdd(!showAdd)}><Plus className="w-3.5 h-3.5" /> Book</Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        {msg && <div className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
+        {msg && <div role="status" className={`mb-3 text-sm font-medium ${msg.type === "success" ? "text-accent" : "text-destructive"}`}>{msg.text}</div>}
         {showAdd && (
           <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-2 mb-4 p-3 bg-muted/30 rounded-lg border flex-wrap items-end">
             <div className="grid gap-1 flex-1 min-w-[160px]">
-              <label className="text-xs text-muted-foreground">Patient</label>
-              <select value={addForm.patientId} onChange={(e) => setAddForm({ ...addForm, patientId: e.target.value })} required
+              <label htmlFor="addApptPatient" className="text-xs text-muted-foreground">Patient</label>
+              <select id="addApptPatient" value={addForm.patientId} onChange={(e) => setAddForm({ ...addForm, patientId: e.target.value })} required
                 className="h-7 rounded-md border border-input bg-background px-2 text-sm">
                 <option value="">Select patient</option>
                 {patients.map((p) => (<option key={p.id} value={p.id}>{p.name}</option>))}
               </select>
             </div>
             <div className="grid gap-1 flex-1 min-w-[160px]">
-              <label className="text-xs text-muted-foreground">Doctor</label>
-              <select value={addForm.doctorId} onChange={(e) => setAddForm({ ...addForm, doctorId: e.target.value })} required
+              <label htmlFor="addApptDoctor" className="text-xs text-muted-foreground">Doctor</label>
+              <select id="addApptDoctor" value={addForm.doctorId} onChange={(e) => setAddForm({ ...addForm, doctorId: e.target.value })} required
                 className="h-7 rounded-md border border-input bg-background px-2 text-sm">
                 <option value="">Select doctor</option>
                 {doctors.map((d) => (<option key={d.id} value={d.id}>{d.name} ({d.specialization})</option>))}
               </select>
             </div>
             <div className="grid gap-1 w-36">
-              <label className="text-xs text-muted-foreground">Date</label>
-              <Input type="date" value={addForm.date} onChange={(e) => setAddForm({ ...addForm, date: e.target.value })} required />
+              <label htmlFor="addApptDate" className="text-xs text-muted-foreground">Date</label>
+              <Input id="addApptDate" type="date" value={addForm.date} onChange={(e) => setAddForm({ ...addForm, date: e.target.value })} required />
             </div>
             <Button type="submit" size="sm" className="mt-4 sm:mt-0">Book</Button>
             <Button type="button" variant="outline" size="sm" className="mt-4 sm:mt-0" onClick={() => { setShowAdd(false); setAddForm({ patientId: "", doctorId: "", date: "" }); }}>Cancel</Button>
@@ -143,10 +143,10 @@ export default function AppointmentList() {
                   <TableCell className="text-right whitespace-nowrap">
                     {reschedId !== a.id && (
                       <>
-                        <Button size="icon-xs" variant="ghost" onClick={() => startResched(a)}><Calendar className="w-3 h-3" /></Button>
+                        <Button size="icon-xs" variant="ghost" aria-label={`Reschedule appointment ${a.id}`} onClick={() => startResched(a)}><Calendar className="w-3 h-3" /></Button>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button size="icon-xs" variant="ghost" onClick={() => setCancelId(a.id)}><Trash2 className="w-3 h-3" /></Button>
+                            <Button size="icon-xs" variant="ghost" aria-label={`Cancel appointment ${a.id}`} onClick={() => setCancelId(a.id)}><Trash2 className="w-3 h-3" /></Button>
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
