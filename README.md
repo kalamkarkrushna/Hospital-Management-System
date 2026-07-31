@@ -1,102 +1,111 @@
-# Hospital Management System
+# Hospital Management System (HMS)
 
-This project is a **Hospital Management System** developed in Java. It provides core functionalities for managing patients, doctors, and appointments in a hospital setting using a MySQL database.
+A full-stack multi-tenant Hospital Management SaaS built with **Spring Boot 3.4 + React + MySQL**.
 
-## Features
+## Features (12 Modules)
 
-- **Add Patient:** Add new patients to the system.
-- **View Patients:** Retrieve and display a list of all patients in the database.
-- **View Doctors:** Retrieve and display a list of all doctors in the database.
-- **Book Appointment:** Schedule appointments between patients and doctors, ensuring availability.
-- **View Appointment:** Display all booked appointments.
+| Module | Page | Description |
+|--------|------|-------------|
+| Patient Management | `/patients` | Add, search, edit, delete patients |
+| Doctor Directory | `/doctors` | Manage doctors and specializations |
+| Appointment Booking | `/appointments` | Book and manage appointments |
+| Role-Based Access | — | ADMIN / STAFF roles with protected routes |
+| Multi-Tenant | — | Each hospital gets isolated data via `hospital_id` |
+| AI-Powered Insights | `/insights` | Dashboard with stats and visual insights |
+| Billing & Invoicing | `/invoices` | Create and track invoices |
+| Pharmacy Management | `/pharmacy` | Medicine inventory with stock tracking |
+| Lab Reports | `/lab-reports` | Manage test results and reports |
+| Staff Scheduling | `/shifts` | Shift management for staff |
+| Telemedicine | `/telemedicine` | Video call scheduling with meeting links |
+| Inventory Management | `/inventory` | Equipment and supply tracking |
+
+## Tech Stack
+
+**Backend:** Java 17+, Spring Boot 3.4.5, Spring Data JDBC, MySQL 8.0, Maven
+**Frontend:** React 19, Vite, Tailwind CSS v4, shadcn/ui, Recharts, Lucide React
+**Auth:** JWT (HttpOnly cookies + Bearer header), BCrypt, rate limiting
+
+## Quick Start
+
+### Prerequisites
+- JDK 17+, Maven, Node.js 18+, MySQL 8.0
+
+### 1. Database
+```sql
+CREATE DATABASE Hospital;
+```
+
+### 2. Backend
+```bash
+cd backend
+mvn spring-boot:run
+```
+Starts on `http://localhost:8080`. Uses `DB_PASSWORD` env var (default: `Krushna@2155`).
+
+### 3. Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Starts on `http://localhost:5173`.
+
+## Demo Data
+
+On first startup, the backend seeds demo data automatically:
+- **Hospital:** City General Hospital
+- **Admin:** `admin@hospital.com` / `admin123`
+- **Staff:** `doctor@hospital.com` / `doctor123`
+- 5 patients, 4 doctors, 5 appointments, 5 invoices, 6 medicines, 4 lab reports, 4 shifts, 4 inventory items, 2 video calls
+
+To reset: truncate all tables and restart.
+
+## API Overview
+
+All endpoints under `/api/` require JWT auth (except `/api/auth/**`).
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/api/auth/login` | POST | No | Login |
+| `/api/auth/register` | POST | No | Register new hospital |
+| `/api/auth/logout` | POST | Yes | Logout (clears cookie) |
+| `/api/patients` | GET/POST | Yes | List / Create patients |
+| `/api/patients/{id}` | PUT/DELETE | Yes | Update / Delete patient |
+| `/api/doctors` | GET/POST | Yes | List / Create doctors |
+| `/api/appointments` | GET/POST | Yes | List / Create appointments |
+| `/api/invoices/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/medicines/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/lab-reports/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/shifts/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/inventory/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/video-calls/**` | GET/POST/PUT/DELETE | Yes | Full CRUD |
+| `/api/insights` | GET | Yes | Dashboard stats |
+| `/api/admin/users` | GET | ADMIN | List users |
+| `/api/admin/users/{id}/role` | PUT | ADMIN | Change user role |
+
+Rate limit: 20 req/min on `/api/auth/` and `/api/admin/`.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_PASSWORD` | `Krushna@2155` | MySQL password |
+| `JWT_SECRET` | (hardcoded fallback) | JWT signing secret |
 
 ## Project Structure
 
-The project consists of the following main components:
-
-### Source Code
-- `src/HospitalManagementSystem.java`: The entry point for the application, containing the main menu and logic flow.
-- `src/Doctor.java`: Handles doctor-related operations, such as viewing doctors and retrieving details by ID.
-- `src/Patient.java`: Handles patient-related operations, including adding and viewing patients.
-
-### Output
-- Compiled `.class` files located in `out/production/Hospital`.
-
-### Configuration
-- `Hospital.iml`: IntelliJ IDEA module configuration file.
-
-## Database
-
-The application uses MySQL as the database. Below are the required tables:
-
-### Patients Table
-| Column  | Type    |
-|---------|---------|
-| Id      | INT     |
-| Name    | VARCHAR |
-| Age     | INT     |
-| Gender  | VARCHAR |
-
-### Doctors Table
-| Column        | Type    |
-|---------------|---------|
-| Id            | INT     |
-| Name          | VARCHAR |
-| Specialization| VARCHAR |
-
-### Appointments Table
-| Column           | Type    |
-|------------------|---------|
-| Id               | INT     |
-| Patient_Id       | INT     |
-| Doctor_Id        | INT     |
-| Appointment_Date | DATE    |
-
-## Setup Instructions
-
-### Prerequisites
-
-- Java Development Kit (JDK) installed (version 8 or higher).
-- MySQL database server installed.
-- IntelliJ IDEA (optional, for development).
-
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/kalamkarkrushna/Hospital-Management-System.git
-   ```
-2. Import the project into IntelliJ IDEA (if using).
-3. Configure the MySQL database:
-   - Create a database named `Hospital`.
-   - Run the SQL scripts to create the required tables.
-4. Update database credentials in `HospitalManagementSystem.java`:
-   ```java
-   private static final String url = "jdbc:mysql://localhost:3306/Hospital";
-   private static final String username = "root";
-   private static final String password = "YourPassword";
-   ```
-5. Compile and run the application:
-   ```bash
-   javac -d out src/*.java
-   java -cp out HospitalManagementSystem
-   ```
-
-## Usage
-
-1. Run the application.
-2. Select the desired option from the menu:
-   - Add new patients.
-   - View existing patients and doctors.
-   - Schedule and view appointments.
-3. Follow the prompts to interact with the system.
-
-## License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-### Author
-
-- **Krushna Kalamkar**
+```
+├── backend/              # Spring Boot API
+│   └── src/main/java/com/hospital/
+│       ├── config/       # Security, CORS, JWT, rate limiter
+│       ├── controller/   # REST controllers
+│       ├── model/        # JDBC entities
+│       ├── repository/   # Data repositories
+│       └── service/      # Business logic
+├── frontend/             # React SPA
+│   └── src/
+│       ├── components/   # Page components & UI
+│       ├── context/      # Auth context
+│       └── api.js        # API client
+└── README.md
+```
