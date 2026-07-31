@@ -2,6 +2,12 @@
 
 A full-stack multi-tenant Hospital Management SaaS built with **Spring Boot 3.4 + React + MySQL**.
 
+## Live Demo
+
+- **Frontend:** https://hrm-k.up.railway.app
+- **Backend API:** https://backend-production-0cff.up.railway.app
+- Demo login: `admin@hospital.com` / `admin123`
+
 ## Features (12 Modules)
 
 | Module | Page | Description |
