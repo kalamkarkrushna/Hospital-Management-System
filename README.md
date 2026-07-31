@@ -114,24 +114,13 @@ Rate limit: 20 req/min on `/api/auth/` and `/api/admin/`.
 
 ## Deployment
 
-### Railway (backend + MySQL)
+Full step-by-step guide: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 
-1. Create a **MySQL** service and a **backend** service (root directory: `backend`).
-2. On the backend service, set the `MYSQL*` variables to point at the MySQL service reference, plus `JWT_SECRET` and `CORS_ALLOWED_ORIGINS`.
-3. Deploy: `railway up --detach --service backend`.
-4. Generate a domain: `railway domain`.
+- **Railway (backend + MySQL):** root directory `backend`, Railpack builder, set `MYSQL*`, `JWT_SECRET`, `CORS_ALLOWED_ORIGINS`, then `railway up --detach --service backend` and `railway domain`.
+- **Vercel (frontend):** root directory `frontend`, build `npm run build`, output `dist`, env var `VITE_API_URL=https://<backend>.up.railway.app/api`.
+- **CI/CD:** `.github/workflows/deploy.yml` deploys both services on push to `main` using a `RAILWAY_TOKEN` secret.
 
-> Note: after creating/changing the backend domain, run `railway redeploy --service backend --yes` so the edge registers the new route — otherwise requests return `404 Application not found` (`x-railway-fallback: true`).
-
-### Vercel (frontend)
-
-1. Import the repo with **Root Directory** set to `frontend`.
-2. Set the env var `VITE_API_URL=https://<your-backend>.up.railway.app/api`.
-3. Deploy. The build command is `npm run build` and the output directory is `dist` (set if not auto-detected).
-
-### Railway (frontend mirror, optional)
-
-Set `VITE_API_URL` on the frontend service the same way, then `railway up --detach --service frontend`.
+> **Gotcha:** after creating or changing the backend domain, run `railway redeploy --service backend --yes` so the edge registers the new route — otherwise requests return `404 Application not found` (`x-railway-fallback: true`).
 
 ## Project Structure
 
@@ -148,5 +137,6 @@ Set `VITE_API_URL` on the frontend service the same way, then `railway up --deta
 │       ├── components/   # Page components & UI
 │       ├── context/      # Auth context
 │       └── api.js        # API client
+├── DEPLOYMENT.md         # Deployment guide (Railway + Vercel)
 └── README.md
 ```
